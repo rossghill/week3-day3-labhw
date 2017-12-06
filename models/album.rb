@@ -5,7 +5,7 @@ class Album
 attr_accessor :title, :genre
 attr_reader :id, :artist_id
 
-  def initialize( )
+  def initialize(options)
     @id = options['id'].to_i if options['id']
     @title = options['title']
     @genre = options['genre']
@@ -33,9 +33,19 @@ def what_artist
   return result.map {|artist| Artist.new(artist)}
 end
 
-def update()
-  sql = "UPDATE albums SET (title, genre, customer_id) = ($1, $2, $3) WHERE id = $4"
-  SqlRunner.run(sql, [@title, @genre, @customer_id, @id])
+def album_update()
+  sql = "UPDATE albums SET (title, genre, artist_id) = ($1, $2, $3) WHERE id = $4"
+  SqlRunner.run(sql, [@title, @genre, @artist_id, @id])
+end
+
+def delete_album
+  sql = "DELETE FROM artists WHERE id =$1"
+  SqlRunner.run(sql, [@id])
+end
+
+def Artist.delete_all
+  sql = "DELETE FROM artists"
+  SqlRunner.run(sql)
 end
 
 end
