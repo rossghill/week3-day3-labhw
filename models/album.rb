@@ -39,13 +39,19 @@ def album_update()
 end
 
 def delete_album
-  sql = "DELETE FROM artists WHERE id =$1"
+  sql = "DELETE FROM albums WHERE id =$1"
   SqlRunner.run(sql, [@id])
 end
 
-def Artist.delete_all
-  sql = "DELETE FROM artists"
+def Album.delete_all
+  sql = "DELETE FROM albums"
   SqlRunner.run(sql)
+end
+
+def Album.find(id)
+  sql = "SELECT * FROM albums WHERE id = $1"
+  result = SqlRunner.run(sql, [id])
+  return result.map {|album| Album.new(album)}
 end
 
 end
